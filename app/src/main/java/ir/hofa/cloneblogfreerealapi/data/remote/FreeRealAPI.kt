@@ -1,22 +1,25 @@
 package ir.hofa.cloneblogfreerealapi.data.remote
 
 import ir.hofa.cloneblogfreerealapi.domain.model.blog.Blog
-import ir.hofa.cloneblogfreerealapi.domain.model.blog.BlogItem
-import retrofit2.http.*
+import ir.hofa.cloneblogfreerealapi.domain.model.login.ReqLoginUserVM
+import ir.hofa.cloneblogfreerealapi.domain.model.login.ResLoginUserVM
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
 
 
 interface FreeRealAPI {
 
-//    @Headers("Content-Type: application/json")
-//    @POST("auth/login")
-//    suspend fun getToken(
-//        @Body reqLoginBody: ReqLoginBody
-//    ): Response<Token>
+    @POST("auth/login")
+    suspend fun reqLoginUser(
+        @Body reqLoginBodyVM: ReqLoginUserVM
+    ): ResLoginUserVM
 
-//@Headers("Authorization" ,"Bearer "+Constants.TOKEN )
+
     @GET("panel/blogs")
     suspend fun getBlog(
-    @Header("Authorization") Bearer: String?
+        @Header("Authorization") Bearer: String?
     ): Blog
 }
 

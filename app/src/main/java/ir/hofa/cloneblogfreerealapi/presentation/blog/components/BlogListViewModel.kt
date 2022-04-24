@@ -1,4 +1,4 @@
-package ir.hofa.cloneblogfreerealapi.presentation.blog
+package ir.hofa.cloneblogfreerealapi.presentation.blog.components
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.hofa.cloneblogfreerealapi.common.Resource
-import ir.hofa.cloneblogfreerealapi.domain.use_case.ReqGetBlog
+import ir.hofa.cloneblogfreerealapi.domain.use_case.blog.ReqGetBlog
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject

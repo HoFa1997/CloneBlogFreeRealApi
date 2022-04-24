@@ -1,4 +1,4 @@
-package ir.hofa.cloneblogfreerealapi.presentation.blog
+package ir.hofa.cloneblogfreerealapi.presentation.blog.components
 
 import ir.hofa.cloneblogfreerealapi.domain.model.blog.BlogItem
 

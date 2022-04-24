@@ -1,8 +1,8 @@
-package ir.hofa.cloneblogfreerealapi.domain.use_case
+package ir.hofa.cloneblogfreerealapi.domain.use_case.blog
+
 
 import ir.hofa.cloneblogfreerealapi.common.Resource
 import ir.hofa.cloneblogfreerealapi.domain.model.blog.Blog
-import ir.hofa.cloneblogfreerealapi.domain.model.blog.BlogItem
 import ir.hofa.cloneblogfreerealapi.domain.repository.FreeRealApiRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

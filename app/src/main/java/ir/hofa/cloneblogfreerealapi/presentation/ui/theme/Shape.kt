@@ -1,4 +1,4 @@
-package ir.hofa.cloneblogfreerealapi.presentation.theme
+package ir.hofa.cloneblogfreerealapi.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
