@@ -21,14 +21,21 @@ import ir.hofa.cloneblogfreerealapi.presentation.blog.components.BlogListViewMod
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    viewModel: BlogListViewModel = hiltViewModel()
+    viewModel: BlogListViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.value
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxHeight()) {
+//            if (state.blog.isEmpty()){
             items(state.blog) {
                 BlogListView(blog = it)
             }
+//            }else{
+//                items(state.blog) {
+//                    BlogListView(blog = it)
+//                }
+//            }
+
         }
         if (state.error.isNotBlank()) {
             Text(

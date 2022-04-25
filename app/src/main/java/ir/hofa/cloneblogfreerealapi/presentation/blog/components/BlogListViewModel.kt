@@ -1,5 +1,6 @@
 package ir.hofa.cloneblogfreerealapi.presentation.blog.components
 
+import android.content.SharedPreferences
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -13,20 +14,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BlogListViewModel @Inject constructor(
-
-    private val useCase: ReqGetBlog
-
+    private val useCase: ReqGetBlog,
+    spLocalBlog: SharedPreferences,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(BlogListState())
     val state: State<BlogListState> = _state
+    private val token: String? = spLocalBlog.getString("token", "tokenString")
 
     init {
         getBlog()
     }
 
     private fun getBlog() {
-        useCase().onEach { result ->
+        useCase(token!!).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     _state.value = BlogListState(blog = result.data?.blogs ?: emptyList())

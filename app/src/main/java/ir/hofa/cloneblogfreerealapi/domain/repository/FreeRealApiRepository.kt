@@ -7,7 +7,7 @@ import ir.hofa.cloneblogfreerealapi.domain.model.login.ResLoginUserVM
 
 interface FreeRealApiRepository {
 
-    suspend fun getBlog(): Blog
+    suspend fun getBlog(token:String): Blog
 
     suspend fun reqLoginUser(body: ReqLoginUserVM): ResLoginUserVM
 }

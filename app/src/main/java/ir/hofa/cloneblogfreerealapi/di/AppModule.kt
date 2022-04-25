@@ -1,15 +1,20 @@
 package ir.hofa.cloneblogfreerealapi.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.hofa.cloneblogfreerealapi.common.Constants
+import ir.hofa.cloneblogfreerealapi.common.Constants.PREF_NAME
 import ir.hofa.cloneblogfreerealapi.data.remote.FreeRealAPI
 import ir.hofa.cloneblogfreerealapi.data.repository.FreeRealApiRepositoryImpl
 import ir.hofa.cloneblogfreerealapi.domain.repository.FreeRealApiRepository
+import ir.hofa.cloneblogfreerealapi.presentation.navigation.Navigator
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -37,6 +42,18 @@ object AppModule {
     @Provides
     fun provideRepository(api: FreeRealAPI): FreeRealApiRepository {
         return FreeRealApiRepositoryImpl(api)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNavigator(): Navigator {
+        return Navigator()
     }
 
 //    @Provides

@@ -13,10 +13,10 @@ import javax.inject.Inject
 class ReqGetBlog @Inject constructor(
     private val repository: FreeRealApiRepository
 ) {
-    operator fun invoke(): Flow<Resource<Blog>> = flow {
+    operator fun invoke(token:String): Flow<Resource<Blog>> = flow {
         try {
             emit(Resource.Loading<Blog>())
-            val listBlog = repository.getBlog()
+            val listBlog = repository.getBlog(token)
             emit(Resource.Success<Blog>(listBlog))
         } catch (e: HttpException) {
             emit(Resource.Error<Blog>(e.localizedMessage ?: "An unexpected error occured"))

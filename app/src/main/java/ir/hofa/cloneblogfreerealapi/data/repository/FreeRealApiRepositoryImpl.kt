@@ -12,8 +12,10 @@ class FreeRealApiRepositoryImpl(
 ) : FreeRealApiRepository {
 
 
-    override suspend fun getBlog()
-            : Blog = api.getBlog("Bearer " + Constants.TOKEN)
+    override suspend fun getBlog(token:String): Blog =
+        api.getBlog(
+            "Bearer $token"
+        )
 
     override suspend fun reqLoginUser(body: ReqLoginUserVM): ResLoginUserVM =
         api.reqLoginUser(body)

@@ -19,12 +19,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import ir.hofa.cloneblogfreerealapi.domain.model.login.ReqLoginUserVM
 import ir.hofa.cloneblogfreerealapi.presentation.login.components.ReqUserLoginViewModel
+import ir.hofa.cloneblogfreerealapi.presentation.navigation.Screen
 
 
 @Composable
 fun LoginScreen(
+    navController: NavController,
     viewModel: ReqUserLoginViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
@@ -134,8 +137,6 @@ fun LoginScreen(
                             if (password.text.isEmpty()) {
                                 passwordError = true
                             }
-                            if (emailError || passwordError) return@Button
-                            isLoading = true
 
                             viewModel.reqUserLogin(
                                 ReqLoginUserVM(
@@ -155,9 +156,8 @@ fun LoginScreen(
                             color = Color.White
                         )
                     }
-                    if (state.token?.success == true)
-                        Text(text = "Welcome Hossein")
                 }
+                Text(text = state.error)
             }
         }
     }
