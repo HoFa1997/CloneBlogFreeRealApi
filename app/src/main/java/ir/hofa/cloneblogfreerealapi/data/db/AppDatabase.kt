@@ -6,5 +6,5 @@
 //
 //@Database(entities = [Blog::class], version = 1)
 //abstract class AppDatabase : RoomDatabase() {
-//    abstract fun productsDao(): AppDao
+//    abstract val dao: AppDao
 //}

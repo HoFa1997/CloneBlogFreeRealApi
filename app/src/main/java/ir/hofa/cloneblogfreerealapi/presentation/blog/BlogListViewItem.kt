@@ -3,10 +3,10 @@ package ir.hofa.cloneblogfreerealapi.presentation.blog
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,21 +17,31 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.skydoves.landscapist.glide.GlideImage
 import ir.hofa.cloneblogfreerealapi.common.Utils
 import ir.hofa.cloneblogfreerealapi.domain.model.blog.BlogItem
+import ir.hofa.cloneblogfreerealapi.navigation.Screen
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("SimpleDateFormat")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BlogListView(blog: BlogItem) {
+fun BlogListView(
+    blog: BlogItem,
+    navController: NavHostController
+) {
+
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { },
-        elevation = 10.dp
+            .padding(8.dp),
+        elevation = 10.dp,
+        onClick = {
+            navController.currentBackStackEntry?.arguments?.putParcelable("id", blog)
+            navController.navigate(Screen.DetailBlog.withArgs(blog._id))
+        }
     ) {
         Column(
             verticalArrangement = Arrangement.Center,

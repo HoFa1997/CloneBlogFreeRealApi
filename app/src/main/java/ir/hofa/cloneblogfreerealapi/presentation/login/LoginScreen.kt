@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.hofa.cloneblogfreerealapi.domain.model.login.ReqLoginUserVM
 import ir.hofa.cloneblogfreerealapi.navigation.Screen
-import ir.hofa.cloneblogfreerealapi.presentation.login.components.LoginUserViewModel
 import java.util.*
 
 
@@ -95,9 +94,10 @@ fun LoginScreen(
                     singleLine = true,
                     label = { Text(text = "Password") },
                     modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = PasswordVisualTransformation(),
+                    //TODO : Clear Comment
+                   // visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
+                      //  keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Next
                     ),
                     trailingIcon = {

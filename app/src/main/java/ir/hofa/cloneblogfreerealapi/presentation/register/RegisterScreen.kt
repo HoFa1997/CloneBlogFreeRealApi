@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import ir.hofa.cloneblogfreerealapi.domain.model.register.ReqRegisterUser
-import ir.hofa.cloneblogfreerealapi.presentation.register.components.RegisterUserViewModel
 import java.util.*
 
 

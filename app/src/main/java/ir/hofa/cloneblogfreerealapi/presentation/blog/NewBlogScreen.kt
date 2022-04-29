@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import ir.hofa.cloneblogfreerealapi.R
 import ir.hofa.cloneblogfreerealapi.common.BitmapToFile
 import ir.hofa.cloneblogfreerealapi.domain.model.blog.newblog.NewBlog
+import ir.hofa.cloneblogfreerealapi.navigation.Screen
 import ir.hofa.cloneblogfreerealapi.presentation.blog.components.BlogListViewModel
 import ir.hofa.cloneblogfreerealapi.presentation.ui.theme.secondaryColor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -52,8 +53,6 @@ fun NewBlogScreen(
     navHostController: NavHostController,
     viewModel: BlogListViewModel = hiltViewModel(),
 ) {
-
-
     val state = viewModel.stateNewBlog.value
 
     val context = LocalContext.current
@@ -282,21 +281,22 @@ fun NewBlogScreen(
 
                     val data = NewBlog(blogImage!!, requestTitle, requestTags, requestText)
                     Log.e("LOG", "$data ")
-                    viewModel.getNewBlog(data)
+                    viewModel.reqNewBlog(data)
 
                 }) {
                 Text(text = "Save Blog")
             }
 
-//            when (state.blog?.success) {
-//                true -> {
-//                    navHostController.navigate(Screen.HomeScreen.route)
-//                    state.blog.success = false
-//                }
-//                else -> {
-//                    Text(text = state.error)
-//                }
-//            }
+            when (state.blog?.success) {
+                true -> {
+                    navHostController.navigate(Screen.HomeScreen.route)
+                    state.blog.success = false
+                    viewModel.getBlog()
+                }
+                else -> {
+                    Text(text = state.error)
+                }
+            }
         }
     }
 

@@ -1,9 +1,7 @@
 package ir.hofa.cloneblogfreerealapi.presentation.blog
 
 import android.os.Build
-import androidx.annotation.NavigationRes
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,10 +9,9 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,10 +25,11 @@ import ir.hofa.cloneblogfreerealapi.presentation.ui.theme.primaryLightColor
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BlogScreen(
-    navHostController: NavHostController,
+    navController: NavHostController,
     viewModel: BlogListViewModel = hiltViewModel(),
 ) {
     val state = viewModel.stateGetBlog.value
+
     Box(modifier = Modifier.fillMaxSize()) {
         if (state.blog.isEmpty()) {
             Text(
@@ -40,9 +38,11 @@ fun BlogScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
-            LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                items(state.blog) {
-                    BlogListView(blog = it)
+            LazyColumn(
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                items(state.blog) { items ->
+                    BlogListView(items,navController)
                 }
             }
         }
@@ -71,8 +71,8 @@ fun BlogScreen(
         ) {
             FloatingActionButton(
                 onClick = {
-                          navHostController.navigate(Screen.NewBlog.route)
-                          },
+                    navController.navigate(Screen.NewBlog.route)
+                },
                 backgroundColor = primaryLightColor
             ) {
                 Text("+")

@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ResNewBlog(
+data class ResBlog(
     @Json(name = "blog")
     val blog: Blog,
     @Json(name = "message")

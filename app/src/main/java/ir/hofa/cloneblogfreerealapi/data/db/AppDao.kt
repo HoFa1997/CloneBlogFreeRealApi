@@ -3,16 +3,16 @@
 //import androidx.room.Dao
 //import androidx.room.Insert
 //import androidx.room.OnConflictStrategy
-//import androidx.room.Query
-//
+//import ir.hofa.cloneblogfreerealapi.domain.model.blog.Blog
 //
 //
 //@Dao
 //interface AppDao {
 //
-////    @Query("SELECT * FROM product")
-////    fun getAllProduct(): List<Product>
-////
-////    @Insert(onConflict = OnConflictStrategy.REPLACE)
-////    fun insertProduct(product: Product)
+////    @Query("SELECT * FROM blogitem")
+////    suspend fun getAllProduct(): List<BlogItem>
+//
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertProduct(blog: Blog)
+//
 //}

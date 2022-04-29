@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.hofa.cloneblogfreerealapi.common.Resource
 import ir.hofa.cloneblogfreerealapi.domain.model.blog.newblog.NewBlog
+import ir.hofa.cloneblogfreerealapi.domain.use_case.blog.ReqDelBlog
 import ir.hofa.cloneblogfreerealapi.domain.use_case.blog.ReqGetBlog
-import ir.hofa.cloneblogfreerealapi.domain.use_case.blog.newblog.ReqNewBlog
-import ir.hofa.cloneblogfreerealapi.presentation.blog.newblog.components.NewBlogState
+import ir.hofa.cloneblogfreerealapi.domain.use_case.blog.ReqNewBlog
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -19,6 +19,7 @@ import javax.inject.Inject
 class BlogListViewModel @Inject constructor(
     private val useCaseGetNewBlog: ReqNewBlog,
     private val useCaseGetBlog: ReqGetBlog,
+    private val useCaseDelBlog: ReqDelBlog,
     spLocalBlog: SharedPreferences,
 ) : ViewModel() {
 
@@ -30,12 +31,15 @@ class BlogListViewModel @Inject constructor(
     private val _stateNewBlog = mutableStateOf(NewBlogState())
     val stateNewBlog: State<NewBlogState> = _stateNewBlog
 
+    private val _stateDelBlog = mutableStateOf(DeleteBlogState())
+    val stateDelNewBlog: State<DeleteBlogState> = _stateDelBlog
+
 
     init {
         getBlog()
     }
 
-    private fun getBlog() {
+    fun getBlog() {
         useCaseGetBlog(token!!).onEach { result ->
             when (result) {
                 is Resource.Success -> {
@@ -53,8 +57,8 @@ class BlogListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getNewBlog(body: NewBlog) {
-        useCaseGetNewBlog(body).onEach { result ->
+    fun reqNewBlog(body: NewBlog) {
+        useCaseGetNewBlog(token!!, body).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     _stateNewBlog.value = NewBlogState(blog = result.data)
@@ -66,6 +70,24 @@ class BlogListViewModel @Inject constructor(
                 }
                 is Resource.Loading -> {
                     _stateNewBlog.value = NewBlogState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun reqDelBlog(blogId: String) {
+        useCaseDelBlog(token!!, blogId).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _stateDelBlog.value = DeleteBlogState(blog = result.data)
+                }
+                is Resource.Error -> {
+                    _stateDelBlog.value = DeleteBlogState(
+                        error = result.message ?: "An unexpected error occurred"
+                    )
+                }
+                is Resource.Loading -> {
+                    _stateDelBlog.value = DeleteBlogState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)

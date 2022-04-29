@@ -1,4 +1,4 @@
-package ir.hofa.cloneblogfreerealapi.presentation.register.components
+package ir.hofa.cloneblogfreerealapi.presentation.register
 
 import android.content.SharedPreferences
 import androidx.compose.runtime.State
@@ -9,8 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.hofa.cloneblogfreerealapi.common.Resource
 import ir.hofa.cloneblogfreerealapi.domain.model.register.ReqRegisterUser
 import ir.hofa.cloneblogfreerealapi.domain.use_case.register.ReqUserRegister
-import ir.hofa.cloneblogfreerealapi.navigation.Navigator
-import ir.hofa.cloneblogfreerealapi.navigation.Screen
+import ir.hofa.cloneblogfreerealapi.presentation.register.components.RegisterUserState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject

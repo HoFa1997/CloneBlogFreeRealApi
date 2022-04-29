@@ -9,6 +9,16 @@ sealed class Screen(override val route: String) : NavigationDestination {
     object HomeScreen : Screen("home")
     object RegisterScreen : Screen("register")
     object NewBlog : Screen("newBlog")
+    object DetailBlog : Screen("detailBlog")
 
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg ->
+                append("/$arg")
+            }
+        }
+    }
 }
+
 

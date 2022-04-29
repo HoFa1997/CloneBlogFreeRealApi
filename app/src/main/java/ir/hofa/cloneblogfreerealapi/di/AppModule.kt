@@ -2,6 +2,7 @@ package ir.hofa.cloneblogfreerealapi.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -65,7 +66,7 @@ object AppModule {
 //            "FreeRealAPI"
 //        ).build()
 //    }
-
+//
 //    @Singleton
 //    @Provides
 //    fun provideDao(appDatabase: AppDatabase): AppDao {

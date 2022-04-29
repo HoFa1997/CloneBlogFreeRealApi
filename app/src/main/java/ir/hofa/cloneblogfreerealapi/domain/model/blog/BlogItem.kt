@@ -1,10 +1,14 @@
 package ir.hofa.cloneblogfreerealapi.domain.model.blog
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
+
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class BlogItem(
     @Json(name = "createdAt")
     val createdAt: String,
@@ -22,8 +26,8 @@ data class BlogItem(
     val title: String,
     @Json(name = "updatedAt")
     val updatedAt: String,
-    @Json(name = "user")
-    val user: User,
+//    @Json(name = "user")
+//    val user: User,
     @Json(name = "__v")
     val v: Int
-)
+) : Parcelable

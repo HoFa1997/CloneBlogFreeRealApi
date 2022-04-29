@@ -2,58 +2,34 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5e61f0548a381b00a059c125de514180",
+    "identityHash": "5148a2ac743f7a3ef674f3dce6dd4547",
     "entities": [
       {
         "tableName": "Blog",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`createdAt` TEXT NOT NULL, `idd` TEXT NOT NULL, `id` TEXT NOT NULL, `image` TEXT NOT NULL, `text` TEXT NOT NULL, `title` TEXT NOT NULL, `updatedAt` TEXT NOT NULL, `v` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `status` INTEGER NOT NULL, `success` INTEGER NOT NULL, `blogs` TEXT NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "createdAt",
-            "columnName": "createdAt",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idd",
-            "columnName": "idd",
-            "affinity": "TEXT",
-            "notNull": true
-          },
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "image",
-            "columnName": "image",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "text",
-            "columnName": "text",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "title",
-            "columnName": "title",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "updatedAt",
-            "columnName": "updatedAt",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "v",
-            "columnName": "v",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "success",
+            "columnName": "success",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "blogs",
+            "columnName": "blogs",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -61,7 +37,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -70,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5e61f0548a381b00a059c125de514180')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5148a2ac743f7a3ef674f3dce6dd4547')"
     ]
   }
 }
