@@ -1,4 +1,4 @@
-package ir.hofa.cloneblogfreerealapi.presentation.login
+package ir.hofa.cloneblogfreerealapi.presentation.register
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,20 +19,21 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import ir.hofa.cloneblogfreerealapi.domain.model.login.ReqLoginUserVM
-import ir.hofa.cloneblogfreerealapi.navigation.Screen
-import ir.hofa.cloneblogfreerealapi.presentation.login.components.LoginUserViewModel
+import androidx.navigation.NavHostController
+import ir.hofa.cloneblogfreerealapi.domain.model.register.ReqRegisterUser
+import ir.hofa.cloneblogfreerealapi.presentation.register.components.RegisterUserViewModel
 import java.util.*
 
 
 @Composable
-fun LoginScreen(
-    navController: NavController,
-    userViewModel: LoginUserViewModel = hiltViewModel()
+fun RegisterScreen(
+    navHostController: NavHostController,
+    userViewModel: RegisterUserViewModel = hiltViewModel()
 ) {
     val state = userViewModel.userState.value
 
+    var name by remember { mutableStateOf(TextFieldValue()) }
+    var nameError by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf(TextFieldValue()) }
     var emailError by remember { mutableStateOf(false) }
     var password by remember { mutableStateOf(TextFieldValue()) }
@@ -47,13 +48,45 @@ fun LoginScreen(
                     .padding(20.dp)
                     .fillMaxSize()
             ) {
-                Text(text = "Let's sign you in.", fontSize = 28.sp)
+                Text(text = "Let's sign up now.", fontSize = 28.sp)
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "Welcome back.", fontSize = 22.sp)
+                //Text(text = "Welcome back.", fontSize = 22.sp)
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "You've been missed!", fontSize = 20.sp)
+                //Text(text = "You've been missed!", fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(20.dp))
 
+                OutlinedTextField(
+                    value = name,
+                    singleLine = true,
+                    onValueChange = {
+                        name = it
+                        nameError = false
+                    },
+                    label = { Text(text = "Name") },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = {
+                        if (nameError) {
+                            Icon(
+                                imageVector = Icons.Filled.Warning,
+                                contentDescription = "error",
+                                tint = Color.Red
+                            )
+                        }
+                    },
+                    isError = nameError
+                )
+                if (nameError) {
+                    Text(
+                        text = "Please enter your name",
+                        color = Color.Red,
+                        fontSize = 12.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     value = email,
                     singleLine = true,
@@ -139,8 +172,9 @@ fun LoginScreen(
                                 passwordError = true
                             }
                             if (!passwordError && !emailError) {
-                                userViewModel.reqUserLogin(
-                                    ReqLoginUserVM(
+                                userViewModel.reqUserRegister(
+                                    ReqRegisterUser(
+                                        name = name.text,
                                         email = email.text.lowercase(Locale.getDefault()),
                                         password = password.text
                                     )
@@ -155,18 +189,10 @@ fun LoginScreen(
                         colors = ButtonDefaults.buttonColors()
                     ) {
                         Text(
-                            text = "Login", fontWeight = FontWeight.Bold,
+                            text = "Sing up", fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
-
                     }
-                }
-
-                TextButton(onClick = {
-                    userViewModel.navigator.navigate(Screen.RegisterScreen)
-                }) {
-                    Text(text = "Create an account")
-
                 }
                 Text(text = state.error)
             }

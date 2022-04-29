@@ -14,7 +14,7 @@ import ir.hofa.cloneblogfreerealapi.common.Constants.PREF_NAME
 import ir.hofa.cloneblogfreerealapi.data.remote.FreeRealAPI
 import ir.hofa.cloneblogfreerealapi.data.repository.FreeRealApiRepositoryImpl
 import ir.hofa.cloneblogfreerealapi.domain.repository.FreeRealApiRepository
-import ir.hofa.cloneblogfreerealapi.presentation.navigation.Navigator
+import ir.hofa.cloneblogfreerealapi.navigation.Navigator
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton

@@ -2,8 +2,8 @@ package ir.hofa.cloneblogfreerealapi.presentation.login.components
 
 import ir.hofa.cloneblogfreerealapi.domain.model.login.ResLoginUserVM
 
-data class ReqUserLoginState(
+data class LoginUserState(
     val isLoading: Boolean = false,
-    val token: ResLoginUserVM? = null,
+    val data: ResLoginUserVM? = null,
     val error: String = ""
 )

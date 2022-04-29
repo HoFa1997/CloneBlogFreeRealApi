@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.material.Scaffold
 import dagger.hilt.android.AndroidEntryPoint
-import ir.hofa.cloneblogfreerealapi.presentation.navigation.Navigation
+import ir.hofa.cloneblogfreerealapi.navigation.Navigation
 import ir.hofa.cloneblogfreerealapi.presentation.ui.theme.CloneBlogFreeRealApiTheme
 import javax.inject.Inject
 
@@ -32,7 +32,7 @@ class MainActivity(
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         spLocalBlog.edit().clear().apply()
+        super.onDestroy()
     }
 }
