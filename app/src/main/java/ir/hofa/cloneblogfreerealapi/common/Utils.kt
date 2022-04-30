@@ -6,6 +6,10 @@ import java.time.format.DateTimeFormatter
 
 class Utils {
 
+    companion object{
+        var USERNAME:String = "username"
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun convertStringToDate(text: String): String {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")

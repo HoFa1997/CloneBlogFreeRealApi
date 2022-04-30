@@ -14,13 +14,13 @@ import javax.inject.Inject
 class ReqNewBlog @Inject constructor(
     private val repository: FreeRealApiRepository
 ) {
-    operator fun invoke(token: String,body:NewBlog): Flow<Resource<ResBlog>> = flow {
+    operator fun invoke(token: String, body: NewBlog): Flow<Resource<ResBlog>> = flow {
         try {
             emit(Resource.Loading<ResBlog>())
-            val listBlog = repository.reqNewBlog(token,body)
+            val listBlog = repository.reqNewBlog(token, body)
             emit(Resource.Success<ResBlog>(listBlog))
         } catch (e: HttpException) {
-            emit(Resource.Error<ResBlog>(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Resource.Error<ResBlog>(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
             emit(Resource.Error<ResBlog>("Couldn't reach server. Check your internet connection."))
         }

@@ -20,7 +20,7 @@ class ReqUserRegister @Inject constructor(
             val listBlog = repository.reqRegisterUser(body)
             emit(Resource.Success<ResRegisterUser>(listBlog))
         } catch (e: HttpException) {
-            emit(Resource.Error<ResRegisterUser>(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Resource.Error<ResRegisterUser>(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
             emit(Resource.Error<ResRegisterUser>("Couldn't reach server. Check your internet connection."))
         }

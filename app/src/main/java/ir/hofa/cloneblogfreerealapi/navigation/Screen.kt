@@ -6,10 +6,10 @@ interface NavigationDestination {
 
 sealed class Screen(override val route: String) : NavigationDestination {
     object LoginScreen : Screen("login")
-    object HomeScreen : Screen("home")
     object RegisterScreen : Screen("register")
     object NewBlog : Screen("newBlog")
     object DetailBlog : Screen("detailBlog")
+    object BlogScreen : Screen("blog")
 
     fun withArgs(vararg args: String): String {
         return buildString {

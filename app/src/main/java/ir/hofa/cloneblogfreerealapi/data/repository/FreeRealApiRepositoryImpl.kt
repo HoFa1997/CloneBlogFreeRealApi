@@ -16,16 +16,10 @@ class FreeRealApiRepositoryImpl(
 ) : FreeRealApiRepository {
 
 
-    //TODO: CHANGE TOKEN TO REAL TOKEN
     override suspend fun getBlog(token: String): Blog =
         api.getBlog(
             "Bearer $token"
         )
-    //  in barayee inke token dasti vared konim
-    //    override suspend fun getBlog(token: String): Blog =
-    //        api.getBlog(
-    //            "Bearer ${Constants.TOKEN}"
-    //        )
 
     override suspend fun reqLoginUser(body: ReqLoginUserVM): ResLoginUserVM =
         api.reqLoginUser(body)

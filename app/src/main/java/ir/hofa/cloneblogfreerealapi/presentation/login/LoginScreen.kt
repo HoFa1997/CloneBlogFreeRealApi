@@ -1,5 +1,10 @@
 package ir.hofa.cloneblogfreerealapi.presentation.login
 
+import android.app.Activity
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,19 +25,41 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import ir.hofa.cloneblogfreerealapi.domain.model.login.ReqLoginUserVM
 import ir.hofa.cloneblogfreerealapi.navigation.Screen
+import ir.hofa.cloneblogfreerealapi.presentation.login.components.LoginUserViewModel
 import java.util.*
 
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
+    navController: NavHostController,
     userViewModel: LoginUserViewModel = hiltViewModel()
 ) {
-    val state = userViewModel.userState.value
 
+    val activity = (LocalContext.current as? Activity)
+    val context = LocalContext.current
+
+    var doubleBackToExitPressedOnce = false
+    BackHandler(true) {
+        if (doubleBackToExitPressedOnce) {
+            activity?.finish()
+            return@BackHandler
+        }
+        doubleBackToExitPressedOnce = true
+        Toast.makeText(
+            context,
+            "Please click BACK again to exit", Toast.LENGTH_SHORT
+        ).show()
+
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+            doubleBackToExitPressedOnce = false
+        }, 2000)
+    }
+
+
+    val state = userViewModel.userState.value
     var email by remember { mutableStateOf(TextFieldValue()) }
     var emailError by remember { mutableStateOf(false) }
     var password by remember { mutableStateOf(TextFieldValue()) }
@@ -94,10 +122,9 @@ fun LoginScreen(
                     singleLine = true,
                     label = { Text(text = "Password") },
                     modifier = Modifier.fillMaxWidth(),
-                    //TODO : Clear Comment
-                   // visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(
-                      //  keyboardType = KeyboardType.Password,
+                        keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Next
                     ),
                     trailingIcon = {
@@ -141,7 +168,9 @@ fun LoginScreen(
                             if (!passwordError && !emailError) {
                                 userViewModel.reqUserLogin(
                                     ReqLoginUserVM(
-                                        email = email.text.lowercase(Locale.getDefault()),
+                                        email = email.text
+                                            .lowercase(Locale.getDefault())
+                                            .filter { !it.isWhitespace() },
                                         password = password.text
                                     )
                                 )
@@ -163,13 +192,24 @@ fun LoginScreen(
                 }
 
                 TextButton(onClick = {
-                    userViewModel.navigator.navigate(Screen.RegisterScreen)
+                    navController.navigate(Screen.RegisterScreen.route)
                 }) {
                     Text(text = "Create an account")
-
                 }
-                Text(text = state.error)
+                when (state.error) {
+                    "HTTP 400 " -> {
+                        Text(text = "Email and Password is correct")
+                    }
+                    "HTTP 403 " -> {
+                        Text(text = "Too many send request pls try again later")
+                    }
+                }
+
             }
         }
+    }
+    if (state.data?.success == true) {
+        state.data.success = false
+        navController.navigate(Screen.BlogScreen.withArgs(email.text))
     }
 }

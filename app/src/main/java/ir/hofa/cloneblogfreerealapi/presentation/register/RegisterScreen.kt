@@ -21,12 +21,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import ir.hofa.cloneblogfreerealapi.domain.model.register.ReqRegisterUser
+import ir.hofa.cloneblogfreerealapi.navigation.Screen
+import ir.hofa.cloneblogfreerealapi.presentation.register.components.RegisterUserViewModel
 import java.util.*
 
 
 @Composable
 fun RegisterScreen(
-    navHostController: NavHostController,
+    navController: NavHostController,
     userViewModel: RegisterUserViewModel = hiltViewModel()
 ) {
     val state = userViewModel.userState.value
@@ -193,8 +195,18 @@ fun RegisterScreen(
                         )
                     }
                 }
+
+                TextButton(onClick = {
+                    navController.navigate(Screen.LoginScreen.route)
+                }) {
+                    Text(text = "Login to your account")
+                }
                 Text(text = state.error)
             }
         }
+    }
+    if (state.data?.success == true) {
+        state.data.success = false
+        navController.navigate(Screen.BlogScreen.withArgs(email.text))
     }
 }

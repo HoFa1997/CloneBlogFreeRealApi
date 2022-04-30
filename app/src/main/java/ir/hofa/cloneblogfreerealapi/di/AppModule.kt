@@ -2,7 +2,6 @@ package ir.hofa.cloneblogfreerealapi.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -15,7 +14,6 @@ import ir.hofa.cloneblogfreerealapi.common.Constants.PREF_NAME
 import ir.hofa.cloneblogfreerealapi.data.remote.FreeRealAPI
 import ir.hofa.cloneblogfreerealapi.data.repository.FreeRealApiRepositoryImpl
 import ir.hofa.cloneblogfreerealapi.domain.repository.FreeRealApiRepository
-import ir.hofa.cloneblogfreerealapi.navigation.Navigator
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -51,11 +49,6 @@ object AppModule {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
-    @Singleton
-    @Provides
-    fun provideNavigator(): Navigator {
-        return Navigator()
-    }
 
 //    @Provides
 //    @Singleton

@@ -6,8 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
-import android.util.Log
+import android.provider.MediaStore.Images.Media.getBitmap
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import ir.hofa.cloneblogfreerealapi.R
 import ir.hofa.cloneblogfreerealapi.common.BitmapToFile
+import ir.hofa.cloneblogfreerealapi.common.Utils
 import ir.hofa.cloneblogfreerealapi.domain.model.blog.newblog.NewBlog
 import ir.hofa.cloneblogfreerealapi.navigation.Screen
 import ir.hofa.cloneblogfreerealapi.presentation.blog.components.BlogListViewModel
@@ -66,8 +66,7 @@ fun NewBlogScreen(
         { uri: Uri? -> imageUri = uri }
     imageUri?.let {
         if (Build.VERSION.SDK_INT < 28) {
-            bitmap.value = MediaStore.Images
-                .Media.getBitmap(context.contentResolver, it)
+            bitmap.value = getBitmap(context.contentResolver, it)
 
         } else {
             val source = ImageDecoder
@@ -83,6 +82,7 @@ fun NewBlogScreen(
     var tagsError by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf(TextFieldValue()) }
     var textError by remember { mutableStateOf(false) }
+    var imageError by remember { mutableStateOf(false) }
 
 
     val launcher = rememberLauncherForActivityResult(
@@ -222,7 +222,15 @@ fun NewBlogScreen(
                         .fillMaxWidth()
                         .wrapContentHeight(unbounded = false)
                 )
+                imageError = false
             }
+        }
+        if (imageError) {
+            Text(
+                text = "Please select photo",
+                color = Color.Red,
+                fontSize = 12.sp
+            )
         }
         Spacer(modifier = Modifier.height(10.dp))
         Button(
@@ -251,47 +259,71 @@ fun NewBlogScreen(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            Button(
-                colors = ButtonDefaults.buttonColors(secondaryColor),
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    val bitmapUri = BitmapToFile(context).saveImageInInternalStorage(bitmapImage!!)
-                    val imageBitmap = Uri.parse(bitmapUri)
+            if (state.isLoading) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(15.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                Button(
+                    colors = ButtonDefaults.buttonColors(secondaryColor),
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        if (title.text.isEmpty()) {
+                            titleError = true
+                        }
+                        if (tags.text.isEmpty()) {
+                            tagsError = true
+                        }
+                        if (text.text.isEmpty()) {
+                            textError = true
+                        }
+                        if (bitmap.value == null) {
+                            imageError = true
+                        }
+                        if (!titleError && !tagsError && !textError) {
+                            if (bitmapImage != null) {
+                                val bitmapUri =
+                                    BitmapToFile(context).saveImageInInternalStorage(bitmapImage)
+                                val imageBitmap = Uri.parse(bitmapUri)
+                                val requestFile: RequestBody =
+                                    File(bitmapUri).asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                                val blogImage: MultipartBody.Part =
+                                    MultipartBody.Part.createFormData(
+                                        "image",
+                                        "$imageBitmap",
+                                        requestFile
+                                    )
 
-                    val requestFile: RequestBody =
-                        File(bitmapUri).asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                    val blogImage: MultipartBody.Part = MultipartBody.Part.createFormData(
-                        "image",
-                        "$imageBitmap",
-                        requestFile
-                    )
+                                val requestTitle: RequestBody =
+                                    title.text.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                                val requestTags: RequestBody =
+                                    tags.text.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                                val requestText: RequestBody =
+                                    text.text.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                                val data =
+                                    NewBlog(blogImage, requestTitle, requestTags, requestText)
+                                viewModel.reqNewBlog(data)
+                            }
+                        }
+                    }) {
+                    Text(text = "Save Blog")
+                }
 
-                    // Log.e("convert", "$convert", )
-                    Log.e("blogimage", "$blogImage")
-                    Log.e("requestfile", "$requestFile")
 
-                    val requestTitle: RequestBody =
-                        title.text.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-
-                    val requestTags: RequestBody =
-                        tags.text.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-
-                    val requestText: RequestBody =
-                        text.text.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-
-                    val data = NewBlog(blogImage!!, requestTitle, requestTags, requestText)
-                    Log.e("LOG", "$data ")
-                    viewModel.reqNewBlog(data)
-
-                }) {
-                Text(text = "Save Blog")
             }
+
 
             when (state.blog?.success) {
                 true -> {
-                    navHostController.navigate(Screen.HomeScreen.route)
                     state.blog.success = false
                     viewModel.getBlog()
+                    navHostController.navigate(Screen.BlogScreen.withArgs(Utils.USERNAME))
                 }
                 else -> {
                     Text(text = state.error)

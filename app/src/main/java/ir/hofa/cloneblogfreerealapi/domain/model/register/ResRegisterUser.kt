@@ -13,7 +13,7 @@ data class ResRegisterUser(
     @Json(name = "status")
     val status: Int,
     @Json(name = "success")
-    val success: Boolean,
+    var success: Boolean,
     @Json(name = "token")
     val token: String
 )
