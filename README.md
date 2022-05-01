@@ -1,4 +1,4 @@
-# CloneBlog-FreeRealAPI.com
+# CloneBlogFreeRealApi
 
 This is a small and educational application
 
