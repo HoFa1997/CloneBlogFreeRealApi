@@ -29,8 +29,12 @@ Retrofit
 Moshi
 
 Glide Compose
+
+Bitmap and galley
 ```
 The project purpose is architecture not UI, feel free to do a PR to change it
+
+bullet point: refactor and update for new futures
 
 ## Support 😄
 If this repo helped you , you can join the [stargazers](https://github.com/HoFa1997/CloneBlogFreeRealApi/stargazers) for this repo ⭐
